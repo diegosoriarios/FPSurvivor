@@ -7,6 +7,7 @@ var DINOSPEED = 400.0
 var PLAYERCOLLISIONDISTANCE = 20
 var DINOCOLLISIONDISTANCE = 55
 var DINOMODEL = 'https://raw.githubusercontent.com/microsoft/Windows-appsample-get-started-js3d/master/GetStartedJS3D/models/dino.json'
+var EGGMODEL = './models/egg.json'
 
 var camera
 var scene
@@ -328,11 +329,13 @@ function createMazeCubes() {
                     cube.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
                     */
 
-                    loader.load('./models/egg.gltf', function (gltf) {
+                    loader.load(EGGMODEL, function (gltf) {
                         scene.add(gltf.scene)
                         collidableObjects.push(gltf.scene)
-                    }, undefined, function (error) {
-                        console.error(error)
+                    }, function (xhr) {
+                        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
+                    }, function (err) {
+                        console.log(err)
                     })
                     //scene.add(cube)
 
