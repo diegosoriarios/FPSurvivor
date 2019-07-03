@@ -324,31 +324,15 @@ function createMazeCubes() {
 
                     collidableObjects.push(cube)
                 } else if (map[i][j] == 2) {
-                    /*var cube = new THREE.Mesh(new THREE.BoxGeometry(UNITWIDTH, UNITHEIGHT, UNITWIDTH), new THREE.MeshPhongMaterial({ color: 0x000000 }))
 
-                    cube.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
-                    cube.position.y = heightOffset
-                    cube.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
-                    */
-
-                   loader.load(EGGMODEL, function(geometry, materials) {
-                        var eggObject = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials))
-                
-                        eggObject.scale.set(EGGSCALE, EGGSCALE, EGGSCALE)
-                        eggObject.rotation.y = degreesToRadians(-90)
-                        eggObject.position.set(30, 0, -400)
-                        eggObject.name = "egg"
-                        scene.add(eggObject)
-                
-                        egg = scene.getObjectByName("egg")
-                
-                        //instructions.innerHTML = "<strong>Click to Play!</strong> </br></br> W,A,S,D or arrow keys = move </br>Mouse = look around"
-                        /**
-                         * @TODO add score on screen
-                         */
-
-                        animate()
-                    })
+                    var geometry = new THREE.SphereGeometry( 5, 32, 32 );
+                    var material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
+                    var sphere = new THREE.Mesh( geometry, material );
+                    sphere.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    sphere.position.y = heightOffset
+                    sphere.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    scene.add( sphere );
+                    collidableObjects.push(sphere)
                     //scene.add(cube)
 
                     //collidableObjects.push(cube)
