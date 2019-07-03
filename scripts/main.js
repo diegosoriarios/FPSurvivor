@@ -285,9 +285,9 @@ function createMazeCubes() {
         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, ],
         [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, ],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, ],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, ],
+        [0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, ],
+        [0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, ],
+        [0, 2, 2, 2, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, ],
         [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
         [0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, ],
         [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, ],
@@ -310,15 +310,34 @@ function createMazeCubes() {
     for (var i = 0; i < totalCubesWide; i++) {
         for(var j = 0; j < map[i].length; j++) {
             if(map[i][j]) {
-                var cube = new THREE.Mesh(cubeGeo, cubeMat)
+                if(map[i][j] == 1) {
+                    var cube = new THREE.Mesh(cubeGeo, cubeMat)
 
-                cube.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
-                cube.position.y = heightOffset
-                cube.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    cube.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    cube.position.y = heightOffset
+                    cube.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
 
-                scene.add(cube)
+                    scene.add(cube)
 
-                collidableObjects.push(cube)
+                    collidableObjects.push(cube)
+                } else if (map[i][j] == 2) {
+                    /*var cube = new THREE.Mesh(new THREE.BoxGeometry(UNITWIDTH, UNITHEIGHT, UNITWIDTH), new THREE.MeshPhongMaterial({ color: 0x000000 }))
+
+                    cube.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    cube.position.y = heightOffset
+                    cube.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    */
+
+                    loader.load('./models/egg.gltf', function (gltf) {
+                        scene.add(gltf.scene)
+                        collidableObjects.push(gltf.scene)
+                    }, undefined, function (error) {
+                        console.error(error)
+                    })
+                    //scene.add(cube)
+
+                    //collidableObjects.push(cube)
+                }
             }
         }
     }
