@@ -4,10 +4,11 @@ var CATCHOFFSET = 120
 var PLAYERSPEED = 800.0
 var DINOSCALE = 20
 var DINOSPEED = 400.0
+var EGGSCALE = 3
 var PLAYERCOLLISIONDISTANCE = 20
 var DINOCOLLISIONDISTANCE = 55
 var DINOMODEL = 'https://raw.githubusercontent.com/microsoft/Windows-appsample-get-started-js3d/master/GetStartedJS3D/models/dino.json'
-var EGGMODEL = './models/egg.json'
+var EGGMODEL = 'https://raw.githubusercontent.com/diegosoriarios/FPSurvivor/master/models/egg.json'
 
 var camera
 var scene
@@ -26,6 +27,7 @@ var collidableObjects = []
 var mapSize
 var dinoVelocity = new THREE.Vector3()
 var dino
+var egg
 var loader = new THREE.JSONLoader()
 var instructions = document.getElementById('instructions')
 var blocker = document.getElementById("blocker")
@@ -329,13 +331,23 @@ function createMazeCubes() {
                     cube.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
                     */
 
-                    loader.load(EGGMODEL, function (gltf) {
-                        scene.add(gltf.scene)
-                        collidableObjects.push(gltf.scene)
-                    }, function (xhr) {
-                        console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
-                    }, function (err) {
-                        console.log(err)
+                   loader.load(EGGMODEL, function(geometry, materials) {
+                        var eggObject = new THREE.Mesh(geometry, new THREE.MultiMaterial(materials))
+                
+                        eggObject.scale.set(EGGSCALE, EGGSCALE, EGGSCALE)
+                        eggObject.rotation.y = degreesToRadians(-90)
+                        eggObject.position.set(30, 0, -400)
+                        eggObject.name = "egg"
+                        scene.add(eggObject)
+                
+                        egg = scene.getObjectByName("egg")
+                
+                        //instructions.innerHTML = "<strong>Click to Play!</strong> </br></br> W,A,S,D or arrow keys = move </br>Mouse = look around"
+                        /**
+                         * @TODO add score on screen
+                         */
+
+                        animate()
                     })
                     //scene.add(cube)
 
