@@ -79,3 +79,10 @@ body {
     vertical-align:middle;
 
 }
+
+#score {
+	position: absolute;
+	top: 50;
+	left: 50;
+	color: white;
+}

@@ -27,7 +27,8 @@ var collidableObjects = []
 var mapSize
 var dinoVelocity = new THREE.Vector3()
 var dino
-var egg
+var egg, eggs = []
+let score = 0
 var loader = new THREE.JSONLoader()
 var instructions = document.getElementById('instructions')
 var blocker = document.getElementById("blocker")
@@ -82,8 +83,15 @@ function init() {
     })
 
     addLights()
+    
+    ////////////////////////postprocessing()
 
     window.addEventListener('resize', onWindowResize, false)
+}
+
+function postprocessing() {
+
+
 }
 
 function addLights() {
@@ -226,6 +234,8 @@ function detectPlayerCollision() {
         cameraDirection.applyMatrix4(rotationMatrix)
     }
 
+    detectEggCollision()
+
     var rayCaster = new THREE.Raycaster(controls.getObject().position, cameraDirection)
 
     if(rayIntersect(rayCaster, PLAYERCOLLISIONDISTANCE)) {
@@ -249,6 +259,36 @@ function detectDinoCollision() {
     } else {
         return false
     }
+}
+
+function detectEggCollision() {
+        eggs.forEach(egg => {
+            if(Math.floor(controls.getObject().position.x) > (egg.position.x - 10) &&
+               Math.floor(controls.getObject().position.x) < (egg.position.x + 10)){
+                console.log('aqui')
+    
+                if(Math.floor(controls.getObject().position.z) > (egg.position.z - 10) &&
+                   Math.floor(controls.getObject().position.z) < (egg.position.z + 10)) {
+                    console.log('remove')
+                    scene.remove( egg );
+                    collidableObjects.splice(eggs.indexOf(egg), 1)
+
+                    eggs.splice(eggs.indexOf(egg), 1)
+
+                    let scoreHTML = document.getElementById("score")
+                    score++
+                    scoreHTML.innerHTML = "Score: " + score
+                }
+    
+            }
+        })
+    
+    /*if(Math.floor(controls.getObject().position.x) == egg.position.x) {
+        console.log('aqui')
+        if(Math.floor(controls.getObject().position.z) == egg.position.z) {
+            alert('get')   
+        }
+    }*/
 }
 
 function rayIntersect(ray, distance) {
@@ -288,9 +328,9 @@ function createMazeCubes() {
         [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, ],
         [0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, ],
-        [0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, ],
-        [0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, ],
-        [0, 2, 2, 2, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, ],
+        [0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, ],
         [0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, ],
         [0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, ],
         [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, ],
@@ -314,7 +354,14 @@ function createMazeCubes() {
         for(var j = 0; j < map[i].length; j++) {
             if(map[i][j]) {
                 if(map[i][j] == 1) {
-                    var cube = new THREE.Mesh(cubeGeo, cubeMat)
+
+                    var material = new THREE.MeshBasicMaterial( { 
+                        map: THREE.ImageUtils.loadTexture( "textures/wall.jpg" ),
+                        side: THREE.DoubleSide
+                    } );
+                    material.map.minFilter = THREE.LinearFilter;
+
+                    var cube = new THREE.Mesh(cubeGeo, material)
 
                     cube.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
                     cube.position.y = heightOffset
@@ -327,12 +374,15 @@ function createMazeCubes() {
 
                     var geometry = new THREE.SphereGeometry( 5, 32, 32 );
                     var material = new THREE.MeshBasicMaterial( {color: 0xffffff} );
-                    var sphere = new THREE.Mesh( geometry, material );
-                    sphere.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
-                    sphere.position.y = heightOffset
-                    sphere.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
-                    scene.add( sphere );
-                    collidableObjects.push(sphere)
+                    egg = new THREE.Mesh( geometry, material );
+                    egg.position.z = (i - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    egg.position.y = heightOffset
+                    egg.position.x = (j - totalCubesWide / 2) * UNITWIDTH + widthOffset
+                    scene.add( egg );
+                    collidableObjects.push(egg)
+
+                    eggs.push(egg)
+                    
                     //scene.add(cube)
 
                     //collidableObjects.push(cube)
@@ -356,7 +406,7 @@ function createGround() {
 
 function createPerimWalls() {
     var halfMap = mapSize/2
-    var sign = 1
+    var sign = 1    
 
     for (var i = 0; i < 2; i++) {
         var perimGeo = new THREE.PlaneGeometry(mapSize, UNITHEIGHT)
