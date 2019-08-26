@@ -345,6 +345,15 @@ function createMazeCubes() {
         color: 0x81cfe0
     })
 
+    for (var i = 0; i < totalCubesWide; i++) {
+        for(var j = 0; j < map[i].length; j++) {
+            let xPos = Math.floor(Math.random * map[0].length)
+            let yPos = Math.floor(Math.random * map[0].length)
+
+            if(map[xPos][yPos] === 0) { map = 2 } else { i-- }
+        }
+    }
+
     var widthOffset = UNITWIDTH / 2
     var heightOffset = UNITHEIGHT / 2
 
