@@ -43,7 +43,9 @@ function init() {
     listenForPlayerMovement()
 
     scene = new THREE.Scene()
-    scene.fog = new THREE.FogExp2(0xcccccc, 0.0015)
+    //scene.fog = new THREE.FogExp2(0xcccccc, 0.0015)
+    scene.fog = new THREE.FogExp2(0x000000, 0.0100)
+
 
     renderer = new THREE.WebGLRenderer()
     renderer.setClearColor(scene.fog.color)
@@ -81,6 +83,22 @@ function init() {
 
         animate()
     })
+
+    var objLoader = new THREE.OBJLoader()
+    objLoader.load(
+        'models/lantern_obj.obj', object => {
+            console.log(object)
+            object.scale.x = .05
+            object.scale.y = .05
+            object.scale.z = .05
+            camera.add(object);
+            object.position.set(3, -2, -10);
+        }, xhr => {
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
+        }, error => {
+            console.log(error)
+        }
+    )
 
     addLights()
     
