@@ -84,10 +84,21 @@ function init() {
         animate()
     })
 
+    /**
+     * Lamp
+     */
+
+    var textureLoader = new THREE.TextureLoader()
+    var map = textureLoader.load('models/textures/lantern_Base_Color.jpg');
+    var lampMaterial = new THREE.MeshPhongMaterial({map: map});
+
     var objLoader = new THREE.OBJLoader()
     objLoader.load(
         'models/lantern_obj.obj', object => {
-            console.log(object)
+            object.traverse(node => {
+                node.material = lampMaterial
+            })
+
             object.scale.x = .05
             object.scale.y = .05
             object.scale.z = .05
@@ -99,6 +110,36 @@ function init() {
             console.log(error)
         }
     )
+
+    /**
+     * Hand
+     
+    var map = textureLoader.load('models/hand_textures/HAND_C.jpg');
+    var handMaterial = new THREE.MeshPhongMaterial({map: map});
+    objLoader.load(
+        'models/riggedHand.obj', object => {
+            console.log(object)
+
+            object.traverse(node => {
+                
+                node.material = handMaterial
+            })
+
+            object.scale.x = 1
+            object.scale.y = 5
+            object.scale.z = 1
+            object.rotation.z = 30
+            object.rotation.y = 30
+            object.rotation.x = 30
+            camera.add(object);
+            object.position.set(1, -5, -5);
+        }, xhr => {
+            console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
+        }, error => {
+            console.log(error)
+        }
+    )
+    */
 
     addLights()
     
