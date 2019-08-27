@@ -103,7 +103,7 @@ function init() {
             object.scale.y = .15
             object.scale.z = .15
             camera.add(object);
-            object.position.set(10, -20, -35);
+            object.position.set(12, -20, -35);
         }, xhr => {
             console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
         }, error => {
@@ -115,10 +115,10 @@ function init() {
      * Hand
      */
     //var map = textureLoader.load('models/hand_textures/HAND_C.jpg');
-    var map = textureLoader.load('models/textures/lantern_Base_Color.jpg');
+    var map = textureLoader.load('models/hand_textures/HAND_C.jpg');
     var handMaterial = new THREE.MeshPhongMaterial({map: map});
     objLoader.load(
-        'models/model.obj', object => {
+        'models/hand.obj', object => {
             console.log(object)
 
             object.traverse(node => {
@@ -129,11 +129,11 @@ function init() {
             object.scale.x = .8
             object.scale.y = .7
             object.scale.z = .8
-            object.rotation.z = 3
-            object.rotation.y = -0.2
-            object.rotation.x = 3.5
+            object.rotation.z = 1.5
+            object.rotation.y = 3
+            object.rotation.x = 2
             camera.add(object);
-            object.position.set(16, -10, -20);
+            object.position.set(15, -4, -20);
         }, xhr => {
             console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
         }, error => {
