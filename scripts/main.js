@@ -99,11 +99,11 @@ function init() {
                 node.material = lampMaterial
             })
 
-            object.scale.x = .05
-            object.scale.y = .05
-            object.scale.z = .05
+            object.scale.x = .15
+            object.scale.y = .15
+            object.scale.z = .15
             camera.add(object);
-            object.position.set(3, -2, -10);
+            object.position.set(10, -20, -35);
         }, xhr => {
             console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
         }, error => {
@@ -113,11 +113,12 @@ function init() {
 
     /**
      * Hand
-     
-    var map = textureLoader.load('models/hand_textures/HAND_C.jpg');
+     */
+    //var map = textureLoader.load('models/hand_textures/HAND_C.jpg');
+    var map = textureLoader.load('models/textures/lantern_Base_Color.jpg');
     var handMaterial = new THREE.MeshPhongMaterial({map: map});
     objLoader.load(
-        'models/riggedHand.obj', object => {
+        'models/model.obj', object => {
             console.log(object)
 
             object.traverse(node => {
@@ -125,21 +126,20 @@ function init() {
                 node.material = handMaterial
             })
 
-            object.scale.x = 1
-            object.scale.y = 5
-            object.scale.z = 1
-            object.rotation.z = 30
-            object.rotation.y = 30
-            object.rotation.x = 30
+            object.scale.x = .8
+            object.scale.y = .7
+            object.scale.z = .8
+            object.rotation.z = 3
+            object.rotation.y = -0.2
+            object.rotation.x = 3.5
             camera.add(object);
-            object.position.set(1, -5, -5);
+            object.position.set(16, -10, -20);
         }, xhr => {
             console.log( ( xhr.loaded / xhr.total * 100 ) + '% loaded' )
         }, error => {
             console.log(error)
         }
     )
-    */
 
     addLights()
     
