@@ -1,1 +1,3 @@
-http-server -c-1
+# FPSurvivor
+
+Simple survivor game using ThreeJS, collect eggs before get caught
